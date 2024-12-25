@@ -16,7 +16,7 @@ class PesaPalPlugin {
     this.ipnUrl = config.ipnUrl || "";
     this.jwtToken = null;
     this.ipnId = null;
-    this.orderTracking = null;
+    this.orderTrackingId = null;
     this.redirectUrl = null; // Placeholder for the redirect URL
   }
 
@@ -42,15 +42,15 @@ class PesaPalPlugin {
     const response = await submitOrderRequest(this.jwtToken, orderData, this.ipnId);
     console.log("response", response);
   
-    this.orderTracking = response.order_tracking_id;
+    this.orderTrackingId = response.order_tracking_id;
     this.redirectUrl = response.redirect_url;
   
-    console.log(`Order submitted. Tracking ID: ${this.orderTracking}`);
+    console.log(`Order submitted. Tracking ID: ${this.orderTrackingId}`);
     console.log(`Redirect URL: ${this.redirectUrl}`);
   
     // Return the redirect URL for frontend handling
     return {
-      trackingId: this.orderTracking,
+      trackingId: this.orderTrackingId,
       redirectUrl: this.redirectUrl,
     };;
   }
@@ -58,17 +58,15 @@ class PesaPalPlugin {
   
 
   // Verify the transaction status
-  // async verification() {
-  //   if (!this.jwtToken) {
-  //     throw new Error("Ensure token is available.");
-  //   }
-  //   if (!this.orderTracking) {
-  //     throw new Error("Order tracking ID is not available.");
-  //   }
-
-  //   console.log("Verifying order:", this.orderTracking);
-  //   return await verification(this.jwtToken, this.orderTracking);
-  // }
+  async verifyTransaction(orderTrackingId) {
+    if (!this.jwtToken) {
+      throw new Error("Ensure token is available.");
+    }
+    if (!orderTrackingId) {
+      throw new Error("OrderTrackingId is required for verification.");
+    }
+    return await verification(this.jwtToken, orderTrackingId);
+  }
 }
 
 export default PesaPalPlugin;

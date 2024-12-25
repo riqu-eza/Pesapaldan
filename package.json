@@ -1,6 +1,6 @@
 {
   "name": "pesapaldan",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A reusable PesaPal plugin for managing tokens, IPN registration, and order submissions.",
   "main": "index.js",
   "type": "module",
